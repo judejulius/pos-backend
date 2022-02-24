@@ -5,11 +5,11 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  body: {
+  category: {
     type: String,
     required: true,
   },
-  author: {
+  description: {
     type: String,
     required: true,
   },
@@ -18,6 +18,10 @@ const postSchema = new mongoose.Schema({
     required: false,
     default: "https://picsum.photos/1920",
   },
+  price:{
+    type: Number,
+    required:true,
+  },
   date: {
     type: Date,
     required: true,
@@ -25,4 +29,4 @@ const postSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Post", postSchema);
+module.exports = mongoose.model("Products", postSchema);

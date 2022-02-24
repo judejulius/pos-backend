@@ -22,27 +22,29 @@ router.get("/:id", [auth, getProduct], (req, res, next) => {
   res.send(res.product);
 });
 
-// CREATE a post
+// CREATE a product
 router.post("/", auth, async (req, res, next) => {
-  const { title, body, img } = req.body;
+  const { title, category,description, img, price } = req.body;
 
-  let post;
+  let product;
 
   img
     ? (post = new Product({
         title,
-        body,
-        author: req.user._id,
+        category,
+        description,
         img,
+        price
       }))
     : (post = new Product({
         title,
-        body,
-        author: req.user._id,
+        category,
+        description,
+        price
       }));
 
   try {
-    const newProduct = await post.save();
+    const newProduct = await product.save();
     res.status(201).json(newProduct);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -54,7 +56,7 @@ router.put("/:id", [auth, getProduct], async (req, res, next) => {
   if (req.user._id !== res.product.author)
     res
       .status(400)
-      .json({ message: "You do not have the permission to update this post" });
+      .json({ message: "You do not have the permission to update products" });
   const { title, body, img } = req.body;
   if (title) res.product.title = title;
   if (body) res.product.body = body;
@@ -73,10 +75,10 @@ router.delete("/:id", [auth, getProduct], async (req, res, next) => {
   if (req.user._id !== res.product.author)
     res
       .status(400)
-      .json({ message: "You do not have the permission to delete this post" });
+      .json({ message: "You do not have the permission to delete products" });
   try {
     await res.product.remove();
-    res.json({ message: "Deleted post" });
+    res.json({ message: "Deleted product" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
